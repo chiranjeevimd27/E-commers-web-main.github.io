@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="icon" href="icon.jpg">
+        <title>Admin Login</title>
+
+        <!--bootstrap cdn -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    </head>
+    <body style="background: url(https://th.bing.com/th/id/R.944c923fea43eb1d3c2f4a7f420520e7?rik=zkYDHV1OrTTdww&riu=http%3a%2f%2fvirtualcustoms.net%2fattachment.php%3fattachmentid%3d52695%26d%3d1330551210&ehk=pgo7p7y8eAkdiijDahNWx8IYqAFSCw%2fe5ZyVr%2bE9xTc%3d&risl=&pid=ImgRaw&r=0);background-repeat: no-repeat;background-size: cover;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-12">
+
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    
+                    <div class="card" style="margin-top:60%;background: url(https://thumbs.dreamstime.com/t/spotlight-white-color-stage-background-design-95280191.jpg);background-repeat: no-repeat;background-size: cover;">
+                        <div class="card-body" >
+                            <h4 class="card-title" style="color:black ;"><center><b>NOISE | Admin Login</b></h4></center>
+                            <br>
+                            <p>
+                                <label style="color:black;"><b>Email</b></label>
+                                <input type="text" class="form-control" id="email" placeholder="Enter Your Email">
+                                <span style="color: red;" id="errEmailMessage"></span>
+                            </p>
+                            <p>
+                                <label style="color: black;"><b>Password</b></label>
+                                <input type="password" id="password" placeholder="Enter Your Password" class="form-control">
+                            </p>
+                            <button class="btn btn-primary" style="width:100%;" onclick="return validateForm()">Take me in!</button>
+                            <span style="color: red;" id="errLoginMessage"></span>
+                        </div>
+                    </div>
+               
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    
+                </div> 
+            </div>
+        </div>
+
+        <script>
+            function validateForm()
+            {
+                    var email = document.getElementById('email').value;
+
+                    if(email == "")
+                    {
+                        document.getElementById('errEmailMessage').innerHTML = 'Please enter Email';
+                        return false;
+                    }
+                    else
+                    {
+                        document.getElementById('errEmailMessage').innerHTML = '';
+                    }
+
+                    // Validate Email
+                    var regxEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+                    var validEmail = email.match(regxEmail);
+
+                    if(!validEmail)
+                    {
+                        document.getElementById('errEmailMessage').innerHTML = 'Please enter valid Email';
+                        return false;
+                    }
+                    else
+                    {
+                        document.getElementById('errEmailMessage').innerHTML = '';
+                    }
+
+                    var password = document.getElementById('password').value;
+
+                    /* AJAX  Code start */
+                    var xhttpLogin = new XMLHttpRequest();
+                    xhttpLogin.onreadystatechange = function()
+                    {
+                        if(this.readyState == 4 && this.status == 200)
+                        {
+                            var returnData = this.responseText
+                            
+                            if(returnData == 0)
+                            {
+                                document.getElementById('errLoginMessage').innerHTML = 'Please check the credentials';
+                            }
+                            else
+                            {
+                                window.location.href = 'admin-dashboard.html';
+                            }
+                            
+
+                            console.log(this.responseText);
+                        }
+                    };
+                    xhttpLogin.open('POST','http://localhost:5000/admin-login',true);
+                    xhttpLogin.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+                    xhttpLogin.send('email='+email+'&password='+password);
+                    /* AJAX Code End */
+            }
+        </script>
+    </body>
+</html>
